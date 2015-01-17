@@ -33,20 +33,9 @@ func blurFilterWitRadius(radius:Double, toImage image:CIImage) -> CIImage {
     return filter.outputImage
 }
 
-
-/*
-// produces an inexplicable error, seems to have something to do to instantiate the UIColor
 func colorGeneratorFilterWithColor(color:UIColor) -> CIImage {
-    let parameters = [kCIInputColorKey: CIColor(color: color)]
-    let filter = CIFilter(name: "CIConstantColorGenerator", withInputParameters: parameters) // compiler error: Extra argument 'name' in call
-    return filter.outputImage
-}
-*/
-// workaround
-private func colorGeneratorFilterWithColor(color:UIColor) -> CIImage {
-    let filter = CIFilter(name: "CIConstantColorGenerator")
-    filter.setDefaults()
-    filter.setValue(CIColor(color: color), forKey: kCIInputColorKey)
+    let parameters = [kCIInputColorKey: CIColor(CGColor: color.CGColor)]
+    let filter = CIFilter(name: "CIConstantColorGenerator", withInputParameters: parameters)
     return filter.outputImage
 }
 
@@ -94,22 +83,10 @@ func blur(radius: Double) -> Filter {
     }
 }
 
-/*
-// produces an inexplicable error, seems to have something to do to instantiate the UIColor
 func colorGenerator(color: UIColor) -> Filter {
     return { _ in
-        let parameters = [kCIInputColorKey: CIColor(color: color)]
-        let filter = CIFilter(name: "CIConstantColorGenerator", withInputParameters: parameters) // compiler error: Extra argument 'name' in call
-        return filter.outputImage
-    }
-}
-*/
-// workaround
-private func colorGenerator(color: UIColor) -> Filter {
-    return { _ in
-        let filter = CIFilter(name: "CIConstantColorGenerator")
-        filter.setDefaults()
-        filter.setValue(CIColor(color: color), forKey: kCIInputColorKey)
+        let parameters = [kCIInputColorKey: CIColor(CGColor: color.CGColor)]
+        let filter = CIFilter(name: "CIConstantColorGenerator", withInputParameters: parameters)
         return filter.outputImage
     }
 }
